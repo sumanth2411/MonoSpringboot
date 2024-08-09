@@ -1,0 +1,110 @@
+package com.techlabs.app.controller;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.techlabs.app.dto.CustomerRequestDto;
+import com.techlabs.app.dto.CustomerResponseDto;
+import com.techlabs.app.dto.ProfileRequestDto;
+import com.techlabs.app.dto.ProfileResponseDto;
+import com.techlabs.app.dto.TransactionResponseDto;
+import com.techlabs.app.dto.UserResponseDto;
+import com.techlabs.app.service.BankService;
+import com.techlabs.app.util.PagedResponse;
+
+@RestController
+@RequestMapping("/api/bank")
+@EnableMethodSecurity
+public class BankController {
+
+    private BankService bankService;
+
+    public BankController(BankService bankService) {
+        this.bankService = bankService;
+    }
+	
+    @GetMapping("/admin/transactions")
+    @PreAuthorize("hasRole('ADMIN')")
+    public PagedResponse<TransactionResponseDto> listTransactions(
+            @RequestParam(name = "page", defaultValue = "0") int pageNumber,
+            @RequestParam(name = "size", defaultValue = "5") int pageSize,
+            @RequestParam(name = "sort", defaultValue = "id") String sortBy,
+            @RequestParam(name = "order", defaultValue = "asc") String sortDirection,
+            @RequestParam(name = "from", defaultValue = "#{T(java.time.LocalDateTime).now().minusDays(30).toString()}") String fromDateStr,
+            @RequestParam(name = "to", defaultValue = "#{T(java.time.LocalDateTime).now().toString()}") String toDateStr) {
+
+        LocalDateTime fromDate = LocalDateTime.parse(fromDateStr);
+        LocalDateTime toDate = LocalDateTime.parse(toDateStr);
+
+        return bankService.listAllTransactions(fromDate, toDate, pageNumber, pageSize, sortBy, sortDirection);
+    }
+
+    @PostMapping("/admin/users/{adminId}/customers")
+    @PreAuthorize("hasRole('ADMIN')")
+    public UserResponseDto addNewCustomer(@RequestBody CustomerRequestDto customerRequestDto, @PathVariable(name = "adminId") long adminId) {
+        return bankService.registerCustomer(customerRequestDto, adminId);
+    }
+
+    @PostMapping("/admin/banks/{bankId}/customers/{customerId}/accounts")
+    @PreAuthorize("hasRole('ADMIN')")
+    public CustomerResponseDto openAccount(@PathVariable(name = "customerId") long customerId, @PathVariable(name = "bankId") int bankId) {
+        return bankService.createCustomerAccount(customerId, bankId);
+    }
+
+    @GetMapping("/admin/customers")
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<CustomerResponseDto> listAllCustomers() {
+        return bankService.retrieveAllCustomers();
+    }
+
+    @GetMapping("/admin/customers/{customerId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public CustomerResponseDto fetchCustomerById(@PathVariable(name = "customerId") long customerId) {
+        return bankService.findCustomerById(customerId);
+    }
+
+    @PostMapping("/customers/transactions")
+    @PreAuthorize("hasRole('CUSTOMER')")
+    public TransactionResponseDto executeTransaction(
+            @RequestParam(name = "fromAccount") long senderAccount,
+            @RequestParam(name = "toAccount") long receiverAccount,
+            @RequestParam(name = "amount") double transactionAmount) {
+        return bankService.processTransaction(senderAccount, receiverAccount, transactionAmount);
+    }
+
+    @GetMapping("/customers/accounts/{accountNumber}/passbook")
+    @PreAuthorize("hasRole('CUSTOMER')")
+    public List<TransactionResponseDto> viewPassbook(@PathVariable(name = "accountNumber") long accountNumber) {
+        return bankService.getAccountPassbook(accountNumber);
+    }
+
+    @PutMapping("/customers/profile")
+    @PreAuthorize("hasRole('CUSTOMER')")
+    public ProfileResponseDto modifyProfile(@RequestBody ProfileRequestDto profileRequestDto) {
+        return bankService.updateCustomerProfile(profileRequestDto, extractUsernameFromSecurityContext());
+    }
+
+    private String extractUsernameFromSecurityContext() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            return userDetails.getUsername();
+        }
+        return null;
+    }
+    
+}

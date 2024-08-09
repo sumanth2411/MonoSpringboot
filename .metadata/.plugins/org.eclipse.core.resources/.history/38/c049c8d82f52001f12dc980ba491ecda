@@ -1,0 +1,32 @@
+package com.techlabs.app.DTO;
+
+import java.time.LocalDateTime;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
+
+public class BlogDTO {
+
+	private int id;
+	
+	@NotBlank(message = "Title cant be blank.")
+	private String title;
+	
+	@NotBlank(message = "Category cant br blank.")
+	private String category;
+	
+	@NotBlank(message = "Data cant  be blank.")
+	@Size(min = 50, max = 2000, message = "Data must be between 50 and 2000 characters.")
+	private String data;
+
+	@NotNull(message = "Published date must not be null. Please provide the publication date.")
+	@FutureOrPresent(message = "Published date must be in the present or future. Please provide a valid date.")
+	private LocalDateTime publishedDate = LocalDateTime.now();
+	
+	private boolean published;
+	
+	private List<CommentDTO> comments;
+
+}

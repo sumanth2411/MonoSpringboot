@@ -1,0 +1,669 @@
+2024-08-07T17:19:06.530+05:30  INFO 12732 --- [11-spring-security] [restartedMain] com.techlabs.app.Application             : Starting Application using Java 21.0.3 with PID 12732 (C:\Users\devel\OneDrive\Documents\MonoSpring\11-spring-security\target\classes started by devel in C:\Users\devel\OneDrive\Documents\MonoSpring\11-spring-security)
+2024-08-07T17:19:06.534+05:30 DEBUG 12732 --- [11-spring-security] [restartedMain] com.techlabs.app.Application             : Running with Spring Boot v3.3.2, Spring v6.1.11
+2024-08-07T17:19:06.537+05:30  INFO 12732 --- [11-spring-security] [restartedMain] com.techlabs.app.Application             : No active profile set, falling back to 1 default profile: "default"
+2024-08-07T17:19:06.661+05:30  INFO 12732 --- [11-spring-security] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-08-07T17:19:06.662+05:30  INFO 12732 --- [11-spring-security] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-08-07T17:19:08.500+05:30  INFO 12732 --- [11-spring-security] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-08-07T17:19:08.660+05:30  INFO 12732 --- [11-spring-security] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 136 ms. Found 1 JPA repository interface.
+2024-08-07T17:19:10.176+05:30  INFO 12732 --- [11-spring-security] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8081 (http)
+2024-08-07T17:19:10.207+05:30  INFO 12732 --- [11-spring-security] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-08-07T17:19:10.207+05:30  INFO 12732 --- [11-spring-security] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.26]
+2024-08-07T17:19:10.357+05:30  INFO 12732 --- [11-spring-security] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-08-07T17:19:10.363+05:30  INFO 12732 --- [11-spring-security] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 3700 ms
+2024-08-07T17:19:10.744+05:30  INFO 12732 --- [11-spring-security] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-08-07T17:19:10.920+05:30  INFO 12732 --- [11-spring-security] [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.2.Final
+2024-08-07T17:19:11.031+05:30  INFO 12732 --- [11-spring-security] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2024-08-07T17:19:11.775+05:30  INFO 12732 --- [11-spring-security] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-08-07T17:19:11.849+05:30  INFO 12732 --- [11-spring-security] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-08-07T17:19:12.658+05:30  INFO 12732 --- [11-spring-security] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@6e796640
+2024-08-07T17:19:12.665+05:30  INFO 12732 --- [11-spring-security] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-08-07T17:19:14.798+05:30  INFO 12732 --- [11-spring-security] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-08-07T17:19:14.915+05:30 DEBUG 12732 --- [11-spring-security] [restartedMain] org.hibernate.SQL                        : 
+    create table image (
+        id integer not null auto_increment,
+        imagedata blob,
+        name varchar(255),
+        type varchar(255),
+        primary key (id)
+    ) engine=InnoDB
+2024-08-07T17:19:15.088+05:30 DEBUG 12732 --- [11-spring-security] [restartedMain] org.hibernate.SQL                        : 
+    create table roles (
+        id bigint not null auto_increment,
+        name varchar(255),
+        primary key (id)
+    ) engine=InnoDB
+2024-08-07T17:19:15.128+05:30 DEBUG 12732 --- [11-spring-security] [restartedMain] org.hibernate.SQL                        : 
+    create table student (
+        id bigint not null auto_increment,
+        email varchar(255),
+        first_name varchar(255),
+        last_name varchar(255),
+        primary key (id)
+    ) engine=InnoDB
+2024-08-07T17:19:15.171+05:30 DEBUG 12732 --- [11-spring-security] [restartedMain] org.hibernate.SQL                        : 
+    create table users (
+        id bigint not null auto_increment,
+        email varchar(255) not null,
+        name varchar(255),
+        password varchar(255) not null,
+        username varchar(255) not null,
+        primary key (id)
+    ) engine=InnoDB
+2024-08-07T17:19:15.202+05:30 DEBUG 12732 --- [11-spring-security] [restartedMain] org.hibernate.SQL                        : 
+    create table users_roles (
+        user_id bigint not null,
+        role_id bigint not null,
+        primary key (user_id, role_id)
+    ) engine=InnoDB
+2024-08-07T17:19:15.236+05:30 DEBUG 12732 --- [11-spring-security] [restartedMain] org.hibernate.SQL                        : 
+    alter table users 
+       drop index UK6dotkott2kjsp8vw4d0m25fb7
+2024-08-07T17:19:15.318+05:30 DEBUG 12732 --- [11-spring-security] [restartedMain] org.hibernate.SQL                        : 
+    alter table users 
+       add constraint UK6dotkott2kjsp8vw4d0m25fb7 unique (email)
+2024-08-07T17:19:15.354+05:30 DEBUG 12732 --- [11-spring-security] [restartedMain] org.hibernate.SQL                        : 
+    alter table users 
+       drop index UKr43af9ap4edm43mmtq01oddj6
+2024-08-07T17:19:15.357+05:30 DEBUG 12732 --- [11-spring-security] [restartedMain] org.hibernate.SQL                        : 
+    alter table users 
+       add constraint UKr43af9ap4edm43mmtq01oddj6 unique (username)
+2024-08-07T17:19:15.384+05:30 DEBUG 12732 --- [11-spring-security] [restartedMain] org.hibernate.SQL                        : 
+    alter table users_roles 
+       add constraint FKj6m8fwv7oqv74fcehir1a9ffy 
+       foreign key (role_id) 
+       references roles (id)
+2024-08-07T17:19:15.479+05:30 DEBUG 12732 --- [11-spring-security] [restartedMain] org.hibernate.SQL                        : 
+    alter table users_roles 
+       add constraint FK2o0jvgh89lemvvo17cbqvdxaa 
+       foreign key (user_id) 
+       references users (id)
+2024-08-07T17:19:15.600+05:30  INFO 12732 --- [11-spring-security] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-08-07T17:19:16.417+05:30  WARN 12732 --- [11-spring-security] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-08-07T17:19:17.133+05:30  WARN 12732 --- [11-spring-security] [restartedMain] .s.s.UserDetailsServiceAutoConfiguration : 
+
+Using generated security password: 582f4642-3611-4ff8-b321-6a9b97699f35
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2024-08-07T17:19:17.170+05:30  INFO 12732 --- [11-spring-security] [restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2024-08-07T17:19:17.537+05:30  INFO 12732 --- [11-spring-security] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2024-08-07T17:19:17.600+05:30  INFO 12732 --- [11-spring-security] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8081 (http) with context path '/'
+2024-08-07T17:19:17.619+05:30  INFO 12732 --- [11-spring-security] [restartedMain] com.techlabs.app.Application             : Started Application in 12.185 seconds (process running for 13.407)
+2024-08-07T17:22:53.157+05:30  INFO 12732 --- [11-spring-security] [File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 1 class path change (1 addition, 0 deletions, 0 modifications)
+2024-08-07T17:22:53.181+05:30  INFO 12732 --- [11-spring-security] [Thread-5] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-08-07T17:22:53.188+05:30  INFO 12732 --- [11-spring-security] [Thread-5] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2024-08-07T17:22:53.219+05:30  INFO 12732 --- [11-spring-security] [Thread-5] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2024-08-07T17:22:53.379+05:30  INFO 12732 --- [11-spring-security] [restartedMain] com.techlabs.app.Application             : Starting Application using Java 21.0.3 with PID 12732 (C:\Users\devel\OneDrive\Documents\MonoSpring\11-spring-security\target\classes started by devel in C:\Users\devel\OneDrive\Documents\MonoSpring\11-spring-security)
+2024-08-07T17:22:53.380+05:30 DEBUG 12732 --- [11-spring-security] [restartedMain] com.techlabs.app.Application             : Running with Spring Boot v3.3.2, Spring v6.1.11
+2024-08-07T17:22:53.381+05:30  INFO 12732 --- [11-spring-security] [restartedMain] com.techlabs.app.Application             : No active profile set, falling back to 1 default profile: "default"
+2024-08-07T17:22:53.992+05:30  INFO 12732 --- [11-spring-security] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-08-07T17:22:54.020+05:30  INFO 12732 --- [11-spring-security] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 27 ms. Found 1 JPA repository interface.
+2024-08-07T17:22:54.250+05:30  INFO 12732 --- [11-spring-security] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8081 (http)
+2024-08-07T17:22:54.252+05:30  INFO 12732 --- [11-spring-security] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-08-07T17:22:54.253+05:30  INFO 12732 --- [11-spring-security] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.26]
+2024-08-07T17:22:54.304+05:30  INFO 12732 --- [11-spring-security] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-08-07T17:22:54.304+05:30  INFO 12732 --- [11-spring-security] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 916 ms
+2024-08-07T17:22:54.382+05:30  INFO 12732 --- [11-spring-security] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-08-07T17:22:54.394+05:30  INFO 12732 --- [11-spring-security] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2024-08-07T17:22:54.423+05:30  INFO 12732 --- [11-spring-security] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-08-07T17:22:54.426+05:30  INFO 12732 --- [11-spring-security] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Starting...
+2024-08-07T17:22:54.452+05:30  INFO 12732 --- [11-spring-security] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-2 - Added connection com.mysql.cj.jdbc.ConnectionImpl@4399f7c9
+2024-08-07T17:22:54.452+05:30  INFO 12732 --- [11-spring-security] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Start completed.
+2024-08-07T17:22:54.640+05:30  INFO 12732 --- [11-spring-security] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-08-07T17:22:54.669+05:30 DEBUG 12732 --- [11-spring-security] [restartedMain] org.hibernate.SQL                        : 
+    alter table image 
+       modify column imagedata blob
+2024-08-07T17:22:54.751+05:30  INFO 12732 --- [11-spring-security] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-08-07T17:22:54.919+05:30  WARN 12732 --- [11-spring-security] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-08-07T17:22:55.150+05:30  WARN 12732 --- [11-spring-security] [restartedMain] .s.s.UserDetailsServiceAutoConfiguration : 
+
+Using generated security password: f3bfae6c-ad2e-4a9f-8905-ed8c4670c174
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2024-08-07T17:22:55.154+05:30  INFO 12732 --- [11-spring-security] [restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2024-08-07T17:22:55.204+05:30  INFO 12732 --- [11-spring-security] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2024-08-07T17:22:55.223+05:30  INFO 12732 --- [11-spring-security] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8081 (http) with context path '/'
+2024-08-07T17:22:55.231+05:30  INFO 12732 --- [11-spring-security] [restartedMain] com.techlabs.app.Application             : Started Application in 1.915 seconds (process running for 231.019)
+2024-08-07T17:22:55.239+05:30  INFO 12732 --- [11-spring-security] [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+2024-08-07T18:35:07.781+05:30  INFO 14472 --- [11-spring-security] [restartedMain] com.techlabs.app.Application             : Starting Application using Java 21.0.3 with PID 14472 (C:\Users\devel\OneDrive\Documents\MonoSpring\11-spring-security\target\classes started by devel in C:\Users\devel\OneDrive\Documents\MonoSpring\11-spring-security)
+2024-08-07T18:35:07.785+05:30 DEBUG 14472 --- [11-spring-security] [restartedMain] com.techlabs.app.Application             : Running with Spring Boot v3.3.2, Spring v6.1.11
+2024-08-07T18:35:07.787+05:30  INFO 14472 --- [11-spring-security] [restartedMain] com.techlabs.app.Application             : No active profile set, falling back to 1 default profile: "default"
+2024-08-07T18:35:07.899+05:30  INFO 14472 --- [11-spring-security] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-08-07T18:35:07.899+05:30  INFO 14472 --- [11-spring-security] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-08-07T18:35:09.560+05:30  WARN 14472 --- [11-spring-security] [restartedMain] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: java.lang.IllegalStateException: Error processing condition on org.springframework.boot.autoconfigure.context.PropertyPlaceholderAutoConfiguration.propertySourcesPlaceholderConfigurer
+2024-08-07T18:35:09.586+05:30  INFO 14472 --- [11-spring-security] [restartedMain] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2024-08-07T18:35:09.643+05:30 ERROR 14472 --- [11-spring-security] [restartedMain] o.s.boot.SpringApplication               : Application run failed
+
+java.lang.IllegalStateException: Error processing condition on org.springframework.boot.autoconfigure.context.PropertyPlaceholderAutoConfiguration.propertySourcesPlaceholderConfigurer
+	at org.springframework.boot.autoconfigure.condition.SpringBootCondition.matches(SpringBootCondition.java:60) ~[spring-boot-autoconfigure-3.3.2.jar:3.3.2]
+	at org.springframework.context.annotation.ConditionEvaluator.shouldSkip(ConditionEvaluator.java:108) ~[spring-context-6.1.11.jar:6.1.11]
+	at org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader.loadBeanDefinitionsForBeanMethod(ConfigurationClassBeanDefinitionReader.java:183) ~[spring-context-6.1.11.jar:6.1.11]
+	at org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader.loadBeanDefinitionsForConfigurationClass(ConfigurationClassBeanDefinitionReader.java:144) ~[spring-context-6.1.11.jar:6.1.11]
+	at org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader.loadBeanDefinitions(ConfigurationClassBeanDefinitionReader.java:120) ~[spring-context-6.1.11.jar:6.1.11]
+	at org.springframework.context.annotation.ConfigurationClassPostProcessor.processConfigBeanDefinitions(ConfigurationClassPostProcessor.java:429) ~[spring-context-6.1.11.jar:6.1.11]
+	at org.springframework.context.annotation.ConfigurationClassPostProcessor.postProcessBeanDefinitionRegistry(ConfigurationClassPostProcessor.java:290) ~[spring-context-6.1.11.jar:6.1.11]
+	at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanDefinitionRegistryPostProcessors(PostProcessorRegistrationDelegate.java:349) ~[spring-context-6.1.11.jar:6.1.11]
+	at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(PostProcessorRegistrationDelegate.java:118) ~[spring-context-6.1.11.jar:6.1.11]
+	at org.springframework.context.support.AbstractApplicationContext.invokeBeanFactoryPostProcessors(AbstractApplicationContext.java:789) ~[spring-context-6.1.11.jar:6.1.11]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:607) ~[spring-context-6.1.11.jar:6.1.11]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146) ~[spring-boot-3.3.2.jar:3.3.2]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:754) ~[spring-boot-3.3.2.jar:3.3.2]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:456) ~[spring-boot-3.3.2.jar:3.3.2]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:335) ~[spring-boot-3.3.2.jar:3.3.2]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1363) ~[spring-boot-3.3.2.jar:3.3.2]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1352) ~[spring-boot-3.3.2.jar:3.3.2]
+	at com.techlabs.app.Application.main(Application.java:10) ~[classes/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50) ~[spring-boot-devtools-3.3.2.jar:3.3.2]
+Caused by: java.lang.IllegalStateException: Failed to introspect Class [com.techlabs.app.config.SecurityConfig] from ClassLoader [org.springframework.boot.devtools.restart.classloader.RestartClassLoader@5830b9b9]
+	at org.springframework.util.ReflectionUtils.getDeclaredMethods(ReflectionUtils.java:483) ~[spring-core-6.1.11.jar:6.1.11]
+	at org.springframework.util.ReflectionUtils.doWithMethods(ReflectionUtils.java:360) ~[spring-core-6.1.11.jar:6.1.11]
+	at org.springframework.util.ReflectionUtils.getUniqueDeclaredMethods(ReflectionUtils.java:417) ~[spring-core-6.1.11.jar:6.1.11]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.lambda$getTypeForFactoryMethod$1(AbstractAutowireCapableBeanFactory.java:750) ~[spring-beans-6.1.11.jar:6.1.11]
+	at java.base/java.util.concurrent.ConcurrentHashMap.computeIfAbsent(ConcurrentHashMap.java:1708) ~[na:na]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.getTypeForFactoryMethod(AbstractAutowireCapableBeanFactory.java:749) ~[spring-beans-6.1.11.jar:6.1.11]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.determineTargetType(AbstractAutowireCapableBeanFactory.java:682) ~[spring-beans-6.1.11.jar:6.1.11]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.predictBeanType(AbstractAutowireCapableBeanFactory.java:653) ~[spring-beans-6.1.11.jar:6.1.11]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.isFactoryBean(AbstractBeanFactory.java:1687) ~[spring-beans-6.1.11.jar:6.1.11]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doGetBeanNamesForType(DefaultListableBeanFactory.java:562) ~[spring-beans-6.1.11.jar:6.1.11]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.getBeanNamesForType(DefaultListableBeanFactory.java:534) ~[spring-beans-6.1.11.jar:6.1.11]
+	at org.springframework.boot.autoconfigure.condition.OnBeanCondition.collectBeanNamesForType(OnBeanCondition.java:247) ~[spring-boot-autoconfigure-3.3.2.jar:3.3.2]
+	at org.springframework.boot.autoconfigure.condition.OnBeanCondition.getBeanNamesForType(OnBeanCondition.java:240) ~[spring-boot-autoconfigure-3.3.2.jar:3.3.2]
+	at org.springframework.boot.autoconfigure.condition.OnBeanCondition.getBeanNamesForType(OnBeanCondition.java:230) ~[spring-boot-autoconfigure-3.3.2.jar:3.3.2]
+	at org.springframework.boot.autoconfigure.condition.OnBeanCondition.getMatchingBeans(OnBeanCondition.java:183) ~[spring-boot-autoconfigure-3.3.2.jar:3.3.2]
+	at org.springframework.boot.autoconfigure.condition.OnBeanCondition.getMatchOutcome(OnBeanCondition.java:158) ~[spring-boot-autoconfigure-3.3.2.jar:3.3.2]
+	at org.springframework.boot.autoconfigure.condition.SpringBootCondition.matches(SpringBootCondition.java:47) ~[spring-boot-autoconfigure-3.3.2.jar:3.3.2]
+	... 20 common frames omitted
+Caused by: java.lang.NoClassDefFoundError: PasswordEncoder
+	at java.base/java.lang.Class.getDeclaredMethods0(Native Method) ~[na:na]
+	at java.base/java.lang.Class.privateGetDeclaredMethods(Class.java:3578) ~[na:na]
+	at java.base/java.lang.Class.getDeclaredMethods(Class.java:2676) ~[na:na]
+	at org.springframework.util.ReflectionUtils.getDeclaredMethods(ReflectionUtils.java:465) ~[spring-core-6.1.11.jar:6.1.11]
+	... 36 common frames omitted
+Caused by: java.lang.ClassNotFoundException: PasswordEncoder
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:641) ~[na:na]
+	at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:188) ~[na:na]
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:526) ~[na:na]
+	at java.base/java.lang.Class.forName0(Native Method) ~[na:na]
+	at java.base/java.lang.Class.forName(Class.java:534) ~[na:na]
+	at java.base/java.lang.Class.forName(Class.java:513) ~[na:na]
+	at org.springframework.boot.devtools.restart.classloader.RestartClassLoader.loadClass(RestartClassLoader.java:121) ~[spring-boot-devtools-3.3.2.jar:3.3.2]
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:526) ~[na:na]
+	... 40 common frames omitted
+
+2024-08-07T18:39:42.106+05:30  INFO 24704 --- [11-spring-security] [restartedMain] com.techlabs.app.Application             : Starting Application using Java 21.0.3 with PID 24704 (C:\Users\devel\OneDrive\Documents\MonoSpring\11-spring-security\target\classes started by devel in C:\Users\devel\OneDrive\Documents\MonoSpring\11-spring-security)
+2024-08-07T18:39:42.111+05:30 DEBUG 24704 --- [11-spring-security] [restartedMain] com.techlabs.app.Application             : Running with Spring Boot v3.3.2, Spring v6.1.11
+2024-08-07T18:39:42.113+05:30  INFO 24704 --- [11-spring-security] [restartedMain] com.techlabs.app.Application             : No active profile set, falling back to 1 default profile: "default"
+2024-08-07T18:39:42.214+05:30  INFO 24704 --- [11-spring-security] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-08-07T18:39:42.215+05:30  INFO 24704 --- [11-spring-security] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-08-07T18:39:43.980+05:30  INFO 24704 --- [11-spring-security] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-08-07T18:39:44.187+05:30  INFO 24704 --- [11-spring-security] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 185 ms. Found 4 JPA repository interfaces.
+2024-08-07T18:39:45.796+05:30  INFO 24704 --- [11-spring-security] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8081 (http)
+2024-08-07T18:39:45.833+05:30  INFO 24704 --- [11-spring-security] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-08-07T18:39:45.833+05:30  INFO 24704 --- [11-spring-security] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.26]
+2024-08-07T18:39:45.949+05:30  INFO 24704 --- [11-spring-security] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-08-07T18:39:45.951+05:30  INFO 24704 --- [11-spring-security] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 3735 ms
+2024-08-07T18:39:46.325+05:30  INFO 24704 --- [11-spring-security] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-08-07T18:39:46.518+05:30  INFO 24704 --- [11-spring-security] [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.2.Final
+2024-08-07T18:39:46.618+05:30  INFO 24704 --- [11-spring-security] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2024-08-07T18:39:47.368+05:30  INFO 24704 --- [11-spring-security] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-08-07T18:39:47.449+05:30  INFO 24704 --- [11-spring-security] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-08-07T18:39:48.280+05:30  INFO 24704 --- [11-spring-security] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@3b34a4c3
+2024-08-07T18:39:48.286+05:30  INFO 24704 --- [11-spring-security] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-08-07T18:39:50.412+05:30  INFO 24704 --- [11-spring-security] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-08-07T18:39:50.542+05:30 DEBUG 24704 --- [11-spring-security] [restartedMain] org.hibernate.SQL                        : 
+    alter table image 
+       modify column imagedata blob
+2024-08-07T18:39:50.642+05:30  INFO 24704 --- [11-spring-security] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-08-07T18:39:51.413+05:30 DEBUG 24704 --- [11-spring-security] [restartedMain] c.t.a.security.JwtAuthenticationFilter   : Filter 'jwtAuthenticationFilter' configured for use
+2024-08-07T18:39:51.515+05:30  INFO 24704 --- [11-spring-security] [restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2024-08-07T18:39:51.722+05:30  WARN 24704 --- [11-spring-security] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-08-07T18:39:52.912+05:30  INFO 24704 --- [11-spring-security] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2024-08-07T18:39:52.974+05:30  INFO 24704 --- [11-spring-security] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8081 (http) with context path '/'
+2024-08-07T18:39:52.991+05:30  INFO 24704 --- [11-spring-security] [restartedMain] com.techlabs.app.Application             : Started Application in 11.872 seconds (process running for 13.062)
+2024-08-07 23:09:24 INFO  com.techlabs.app.Application - Starting Application using Java 21.0.3 with PID 4068 (C:\Users\devel\OneDrive\Documents\MonoSpring\11-spring-security\target\classes started by devel in C:\Users\devel\OneDrive\Documents\MonoSpring\11-spring-security)
+2024-08-07 23:09:24 DEBUG com.techlabs.app.Application - Running with Spring Boot v3.3.2, Spring v6.1.11
+2024-08-07 23:09:24 INFO  com.techlabs.app.Application - No active profile set, falling back to 1 default profile: "default"
+2024-08-07 23:09:25 INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-08-07 23:09:25 INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-08-07 23:09:26 INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-08-07 23:09:27 INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 149 ms. Found 4 JPA repository interfaces.
+2024-08-07 23:09:28 INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8081 (http)
+2024-08-07 23:09:28 INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2024-08-07 23:09:28 INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.26]
+2024-08-07 23:09:28 INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2024-08-07 23:09:28 INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 3617 ms
+2024-08-07 23:09:29 INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-08-07 23:09:29 INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.5.2.Final
+2024-08-07 23:09:29 INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2024-08-07 23:09:30 INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-08-07 23:09:30 INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2024-08-07 23:09:30 INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@76fc8bfb
+2024-08-07 23:09:31 INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2024-08-07 23:09:33 INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-08-07 23:09:33 DEBUG org.hibernate.SQL - 
+    alter table image 
+       modify column imagedata blob
+2024-08-07 23:09:33 INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-08-07 23:09:34 DEBUG c.t.a.s.JwtAuthenticationFilter - Filter 'jwtAuthenticationFilter' configured for use
+2024-08-07 23:09:34 INFO  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2024-08-07 23:09:34 WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-08-07 23:09:35 INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2024-08-07 23:09:35 INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8081 (http) with context path '/'
+2024-08-07 23:09:35 INFO  com.techlabs.app.Application - Started Application in 11.571 seconds (process running for 13.149)
+2024-08-07 23:09:46 INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-08-07 23:09:46 INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2024-08-07 23:09:46 INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 4 ms
+2024-08-07 23:12:30 WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.http.converter.HttpMessageNotReadableException: Required request body is missing: public org.springframework.http.ResponseEntity<com.techlabs.app.dto.JWTAuthResponse> com.techlabs.app.controller.AuthController.login(com.techlabs.app.dto.LoginDto)]
+2024-08-07 23:13:56 WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [org.springframework.http.converter.HttpMessageNotReadableException: Required request body is missing: public org.springframework.http.ResponseEntity<com.techlabs.app.dto.JWTAuthResponse> com.techlabs.app.controller.AuthController.login(com.techlabs.app.dto.LoginDto)]
+2024-08-08 10:24:17 INFO  com.techlabs.app.Application - Starting Application using Java 21.0.3 with PID 2440 (C:\Users\devel\OneDrive\Documents\MonoSpring\11-spring-security\target\classes started by devel in C:\Users\devel\OneDrive\Documents\MonoSpring\11-spring-security)
+2024-08-08 10:24:17 DEBUG com.techlabs.app.Application - Running with Spring Boot v3.3.2, Spring v6.1.11
+2024-08-08 10:24:17 INFO  com.techlabs.app.Application - No active profile set, falling back to 1 default profile: "default"
+2024-08-08 10:24:17 INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-08-08 10:24:17 INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-08-08 10:24:19 INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-08-08 10:24:19 INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 192 ms. Found 4 JPA repository interfaces.
+2024-08-08 10:24:21 INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8081 (http)
+2024-08-08 10:24:21 INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2024-08-08 10:24:21 INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.26]
+2024-08-08 10:24:21 INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2024-08-08 10:24:21 INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 3840 ms
+2024-08-08 10:24:21 INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-08-08 10:24:21 INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.5.2.Final
+2024-08-08 10:24:21 INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2024-08-08 10:24:22 INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-08-08 10:24:22 INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2024-08-08 10:24:23 INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@1354f3fa
+2024-08-08 10:24:23 INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2024-08-08 10:24:25 INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-08-08 10:24:25 DEBUG org.hibernate.SQL - 
+    alter table image 
+       modify column imagedata blob
+2024-08-08 10:24:25 INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-08-08 10:24:26 DEBUG c.t.a.s.JwtAuthenticationFilter - Filter 'jwtAuthenticationFilter' configured for use
+2024-08-08 10:24:26 INFO  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2024-08-08 10:24:26 WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-08-08 10:24:28 INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2024-08-08 10:24:28 INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8081 (http) with context path '/'
+2024-08-08 10:24:28 INFO  com.techlabs.app.Application - Started Application in 11.891 seconds (process running for 13.533)
+2024-08-08 10:26:54 INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-08-08 10:26:54 INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2024-08-08 10:26:54 INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 5 ms
+2024-08-08 10:27:24 ERROR o.a.c.c.C.[.[.[.[dispatcherServlet] - Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception
+com.techlabs.app.exception.StudentApiException: Invalid JWT token
+	at com.techlabs.app.security.JwtTokenProvider.validateToken(JwtTokenProvider.java:74)
+	at com.techlabs.app.security.JwtAuthenticationFilter.doFilterInternal(JwtAuthenticationFilter.java:38)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:107)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:93)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:91)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.servlet.handler.HandlerMappingIntrospector.lambda$createCacheFilter$3(HandlerMappingIntrospector.java:195)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74)
+	at org.springframework.security.config.annotation.web.configuration.WebMvcSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebMvcSecurityConfiguration.java:230)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:352)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:268)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:389)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:904)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1741)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1190)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+2024-08-08 10:28:48 ERROR o.a.c.c.C.[.[.[.[dispatcherServlet] - Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception
+com.techlabs.app.exception.StudentApiException: Invalid JWT token
+	at com.techlabs.app.security.JwtTokenProvider.validateToken(JwtTokenProvider.java:74)
+	at com.techlabs.app.security.JwtAuthenticationFilter.doFilterInternal(JwtAuthenticationFilter.java:38)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:107)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:93)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:91)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.servlet.handler.HandlerMappingIntrospector.lambda$createCacheFilter$3(HandlerMappingIntrospector.java:195)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74)
+	at org.springframework.security.config.annotation.web.configuration.WebMvcSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebMvcSecurityConfiguration.java:230)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:352)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:268)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:389)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:904)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1741)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1190)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+2024-08-08 10:37:35 TRACE c.t.app.controller.AuthController - A TRACE Message
+2024-08-08 10:37:35 DEBUG c.t.app.controller.AuthController - A DEBUG Message
+2024-08-08 10:37:35 INFO  c.t.app.controller.AuthController - An INFO Message
+2024-08-08 10:37:35 WARN  c.t.app.controller.AuthController - A WARN Message
+2024-08-08 10:37:35 ERROR c.t.app.controller.AuthController - An ERROR Message
+2024-08-08 10:37:36 DEBUG org.hibernate.SQL - 
+    select
+        u1_0.id 
+    from
+        users u1_0 
+    where
+        u1_0.username=? 
+    limit
+        ?
+2024-08-08 10:37:36 TRACE org.hibernate.orm.jdbc.bind - binding parameter (1:VARCHAR) <- [sumanth]
+2024-08-08 10:37:36 TRACE org.hibernate.orm.jdbc.bind - binding parameter (2:INTEGER) <- [1]
+2024-08-08 10:37:36 DEBUG org.hibernate.SQL - 
+    select
+        u1_0.id 
+    from
+        users u1_0 
+    where
+        u1_0.email=? 
+    limit
+        ?
+2024-08-08 10:37:36 TRACE org.hibernate.orm.jdbc.bind - binding parameter (1:VARCHAR) <- [sai@gmail.com]
+2024-08-08 10:37:36 TRACE org.hibernate.orm.jdbc.bind - binding parameter (2:INTEGER) <- [1]
+2024-08-08 10:37:36 WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [java.lang.NullPointerException: Cannot invoke "String.equals(Object)" because the return value of "com.techlabs.app.dto.RegisterDto.getIsAdmin()" is null]
+2024-08-08 10:38:48 TRACE c.t.app.controller.AuthController - A TRACE Message
+2024-08-08 10:38:48 DEBUG c.t.app.controller.AuthController - A DEBUG Message
+2024-08-08 10:38:48 INFO  c.t.app.controller.AuthController - An INFO Message
+2024-08-08 10:38:48 WARN  c.t.app.controller.AuthController - A WARN Message
+2024-08-08 10:38:48 ERROR c.t.app.controller.AuthController - An ERROR Message
+2024-08-08 10:38:48 DEBUG org.hibernate.SQL - 
+    select
+        u1_0.id 
+    from
+        users u1_0 
+    where
+        u1_0.username=? 
+    limit
+        ?
+2024-08-08 10:38:48 TRACE org.hibernate.orm.jdbc.bind - binding parameter (1:VARCHAR) <- [sumanth]
+2024-08-08 10:38:48 TRACE org.hibernate.orm.jdbc.bind - binding parameter (2:INTEGER) <- [1]
+2024-08-08 10:38:48 DEBUG org.hibernate.SQL - 
+    select
+        u1_0.id 
+    from
+        users u1_0 
+    where
+        u1_0.email=? 
+    limit
+        ?
+2024-08-08 10:38:48 TRACE org.hibernate.orm.jdbc.bind - binding parameter (1:VARCHAR) <- [sai@gmail.com]
+2024-08-08 10:38:48 TRACE org.hibernate.orm.jdbc.bind - binding parameter (2:INTEGER) <- [1]
+2024-08-08 10:38:49 WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [java.lang.NullPointerException: Cannot invoke "String.equals(Object)" because the return value of "com.techlabs.app.dto.RegisterDto.getIsAdmin()" is null]
+2024-08-08 10:39:26 TRACE c.t.app.controller.AuthController - A TRACE Message
+2024-08-08 10:39:26 DEBUG c.t.app.controller.AuthController - A DEBUG Message
+2024-08-08 10:39:26 INFO  c.t.app.controller.AuthController - An INFO Message
+2024-08-08 10:39:26 WARN  c.t.app.controller.AuthController - A WARN Message
+2024-08-08 10:39:26 ERROR c.t.app.controller.AuthController - An ERROR Message
+2024-08-08 10:39:26 DEBUG org.hibernate.SQL - 
+    select
+        u1_0.id 
+    from
+        users u1_0 
+    where
+        u1_0.username=? 
+    limit
+        ?
+2024-08-08 10:39:26 TRACE org.hibernate.orm.jdbc.bind - binding parameter (1:VARCHAR) <- [sumanth]
+2024-08-08 10:39:26 TRACE org.hibernate.orm.jdbc.bind - binding parameter (2:INTEGER) <- [1]
+2024-08-08 10:39:26 DEBUG org.hibernate.SQL - 
+    select
+        u1_0.id 
+    from
+        users u1_0 
+    where
+        u1_0.email=? 
+    limit
+        ?
+2024-08-08 10:39:26 TRACE org.hibernate.orm.jdbc.bind - binding parameter (1:VARCHAR) <- [sai@gmail.com]
+2024-08-08 10:39:26 TRACE org.hibernate.orm.jdbc.bind - binding parameter (2:INTEGER) <- [1]
+2024-08-08 10:39:26 DEBUG org.hibernate.SQL - 
+    select
+        r1_0.id,
+        r1_0.name 
+    from
+        roles r1_0 
+    where
+        r1_0.name=?
+2024-08-08 10:39:26 TRACE org.hibernate.orm.jdbc.bind - binding parameter (1:VARCHAR) <- [ROLE_ADMIN]
+2024-08-08 10:39:26 WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - Resolved [com.techlabs.app.exception.StudentApiException: Admin role not set up in the database]
+2024-08-08 10:41:43 TRACE c.t.app.controller.AuthController - A TRACE Message
+2024-08-08 10:41:43 DEBUG c.t.app.controller.AuthController - A DEBUG Message
+2024-08-08 10:41:43 INFO  c.t.app.controller.AuthController - An INFO Message
+2024-08-08 10:41:43 WARN  c.t.app.controller.AuthController - A WARN Message
+2024-08-08 10:41:43 ERROR c.t.app.controller.AuthController - An ERROR Message
+2024-08-08 10:41:43 DEBUG org.hibernate.SQL - 
+    select
+        u1_0.id 
+    from
+        users u1_0 
+    where
+        u1_0.username=? 
+    limit
+        ?
+2024-08-08 10:41:43 TRACE org.hibernate.orm.jdbc.bind - binding parameter (1:VARCHAR) <- [sumanth]
+2024-08-08 10:41:43 TRACE org.hibernate.orm.jdbc.bind - binding parameter (2:INTEGER) <- [1]
+2024-08-08 10:41:43 DEBUG org.hibernate.SQL - 
+    select
+        u1_0.id 
+    from
+        users u1_0 
+    where
+        u1_0.email=? 
+    limit
+        ?
+2024-08-08 10:41:43 TRACE org.hibernate.orm.jdbc.bind - binding parameter (1:VARCHAR) <- [sai@gmail.com]
+2024-08-08 10:41:43 TRACE org.hibernate.orm.jdbc.bind - binding parameter (2:INTEGER) <- [1]
+2024-08-08 10:41:44 DEBUG org.hibernate.SQL - 
+    select
+        r1_0.id,
+        r1_0.name 
+    from
+        roles r1_0 
+    where
+        r1_0.name=?
+2024-08-08 10:41:44 TRACE org.hibernate.orm.jdbc.bind - binding parameter (1:VARCHAR) <- [ROLE_ADMIN]
+2024-08-08 10:41:44 DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        users
+        (email, name, password, username) 
+    values
+        (?, ?, ?, ?)
+2024-08-08 10:41:44 TRACE org.hibernate.orm.jdbc.bind - binding parameter (1:VARCHAR) <- [sai@gmail.com]
+2024-08-08 10:41:44 TRACE org.hibernate.orm.jdbc.bind - binding parameter (2:VARCHAR) <- [sumanth]
+2024-08-08 10:41:44 TRACE org.hibernate.orm.jdbc.bind - binding parameter (3:VARCHAR) <- [$2a$10$1Fuyz5DosiQ5S040UUhpYOesqTOxJ.FtZRVMD2t5bv39BSpEb3/MC]
+2024-08-08 10:41:44 TRACE org.hibernate.orm.jdbc.bind - binding parameter (4:VARCHAR) <- [sumanth]
+2024-08-08 10:41:44 DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        users_roles
+        (user_id, role_id) 
+    values
+        (?, ?)
+2024-08-08 10:41:44 TRACE org.hibernate.orm.jdbc.bind - binding parameter (1:BIGINT) <- [1]
+2024-08-08 10:41:44 TRACE org.hibernate.orm.jdbc.bind - binding parameter (2:BIGINT) <- [1]
+2024-08-08 10:43:26 TRACE c.t.app.controller.AuthController - A TRACE Message
+2024-08-08 10:43:26 DEBUG c.t.app.controller.AuthController - A DEBUG Message
+2024-08-08 10:43:26 INFO  c.t.app.controller.AuthController - An INFO Message
+2024-08-08 10:43:26 WARN  c.t.app.controller.AuthController - A WARN Message
+2024-08-08 10:43:26 ERROR c.t.app.controller.AuthController - An ERROR Message
+2024-08-08 10:43:26 DEBUG org.hibernate.SQL - 
+    select
+        u1_0.id,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.username=? 
+        or u1_0.email=?
+2024-08-08 10:43:26 TRACE org.hibernate.orm.jdbc.bind - binding parameter (1:VARCHAR) <- [sumanth]
+2024-08-08 10:43:26 TRACE org.hibernate.orm.jdbc.bind - binding parameter (2:VARCHAR) <- [sumanth]
+2024-08-08 10:43:26 DEBUG org.hibernate.SQL - 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        users_roles r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2024-08-08 10:43:26 TRACE org.hibernate.orm.jdbc.bind - binding parameter (1:BIGINT) <- [1]
+2024-08-08 10:43:49 DEBUG org.hibernate.SQL - 
+    select
+        u1_0.id,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.username=? 
+        or u1_0.email=?
+2024-08-08 10:43:49 TRACE org.hibernate.orm.jdbc.bind - binding parameter (1:VARCHAR) <- [sai@gmail.com]
+2024-08-08 10:43:49 TRACE org.hibernate.orm.jdbc.bind - binding parameter (2:VARCHAR) <- [sai@gmail.com]
+2024-08-08 10:43:49 DEBUG org.hibernate.SQL - 
+    select
+        r1_0.user_id,
+        r1_1.id,
+        r1_1.name 
+    from
+        users_roles r1_0 
+    join
+        roles r1_1 
+            on r1_1.id=r1_0.role_id 
+    where
+        r1_0.user_id=?
+2024-08-08 10:43:49 TRACE org.hibernate.orm.jdbc.bind - binding parameter (1:BIGINT) <- [1]
+2024-08-08 10:43:49 DEBUG org.hibernate.SQL - 
+    select
+        s1_0.id,
+        s1_0.email,
+        s1_0.first_name,
+        s1_0.last_name 
+    from
+        student s1_0
+2024-08-10 00:08:50 INFO  com.techlabs.app.Application - Starting Application using Java 21.0.3 with PID 17748 (C:\Users\devel\OneDrive\Documents\MonoSpring\11-spring-security\target\classes started by devel in C:\Users\devel\OneDrive\Documents\MonoSpring\11-spring-security)
+2024-08-10 00:08:50 DEBUG com.techlabs.app.Application - Running with Spring Boot v3.3.2, Spring v6.1.11
+2024-08-10 00:08:50 INFO  com.techlabs.app.Application - No active profile set, falling back to 1 default profile: "default"
+2024-08-10 00:08:50 INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-08-10 00:08:50 INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-08-10 00:08:51 INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-08-10 00:08:51 INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 106 ms. Found 4 JPA repository interfaces.
+2024-08-10 00:08:53 INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8081 (http)
+2024-08-10 00:08:53 INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2024-08-10 00:08:53 INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.26]
+2024-08-10 00:08:53 INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2024-08-10 00:08:53 INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 3093 ms
+2024-08-10 00:08:53 INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-08-10 00:08:53 INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.5.2.Final
+2024-08-10 00:08:53 INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2024-08-10 00:08:54 INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-08-10 00:08:54 INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2024-08-10 00:08:54 INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@7ac820c8
+2024-08-10 00:08:54 INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2024-08-10 00:08:56 INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-08-10 00:08:56 DEBUG org.hibernate.SQL - 
+    alter table image 
+       modify column imagedata blob
+2024-08-10 00:08:56 INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-08-10 00:08:57 DEBUG c.t.a.s.JwtAuthenticationFilter - Filter 'jwtAuthenticationFilter' configured for use
+2024-08-10 00:08:57 INFO  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2024-08-10 00:08:57 WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-08-10 00:08:58 INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2024-08-10 00:08:58 INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8081 (http) with context path '/'
+2024-08-10 00:08:58 INFO  com.techlabs.app.Application - Started Application in 8.826 seconds (process running for 9.82)

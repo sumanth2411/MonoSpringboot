@@ -1,0 +1,113 @@
+package com.techlabs.app.entity;
+
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+
+@Data
+@Entity
+public class Account {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long accountNumber;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "bank_id")
+	private Bank bank;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "customer_id")
+	private Customer customer;
+
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "senderAccount")
+	private List<Transaction> sentTransactions;
+	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "receiverAccount")
+	private List<Transaction> receiverTransactions;
+
+	@NotNull
+	private double balance=1000.0;
+
+	public Account(long accountNumber, Bank bank, Customer customer, List<Transaction> sentTransactions,
+			List<Transaction> receiverTransactions, @NotNull double balance) {
+		super();
+		this.accountNumber = accountNumber;
+		this.bank = bank;
+		this.customer = customer;
+		this.sentTransactions = sentTransactions;
+		this.receiverTransactions = receiverTransactions;
+		this.balance = balance;
+	}
+
+	public Account() {
+		super();
+	}
+
+	public long getAccountNumber() {
+		return accountNumber;
+	}
+
+	public void setAccountNumber(long accountNumber) {
+		this.accountNumber = accountNumber;
+	}
+
+	public Bank getBank() {
+		return bank;
+	}
+
+	public void setBank(Bank bank) {
+		this.bank = bank;
+	}
+
+	public Customer getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+	}
+
+	public List<Transaction> getSentTransactions() {
+		return sentTransactions;
+	}
+
+	public void setSentTransactions(List<Transaction> sentTransactions) {
+		this.sentTransactions = sentTransactions;
+	}
+
+	public List<Transaction> getReceiverTransactions() {
+		return receiverTransactions;
+	}
+
+	public void setReceiverTransactions(List<Transaction> receiverTransactions) {
+		this.receiverTransactions = receiverTransactions;
+	}
+
+	public double getBalance() {
+		return balance;
+	}
+
+	public void setBalance(double balance) {
+		this.balance = balance;
+	}
+
+	@Override
+	public String toString() {
+		return "Account [accountNumber=" + accountNumber + ", bank=" + bank + ", customer=" + customer
+				+ ", sentTransactions=" + sentTransactions + ", receiverTransactions=" + receiverTransactions
+				+ ", balance=" + balance + "]";
+	}
+	
+	
+}

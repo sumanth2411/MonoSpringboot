@@ -1,0 +1,288 @@
+package com.techlabs.app.service;
+
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import com.techlabs.app.dto.AccountResponseDto;
+import com.techlabs.app.dto.CustomerRequestDto;
+import com.techlabs.app.dto.CustomerResponseDto;
+import com.techlabs.app.dto.ProfileRequestDto;
+import com.techlabs.app.dto.ProfileResponseDto;
+import com.techlabs.app.dto.TransactionResponseDto;
+import com.techlabs.app.dto.UserResponseDto;
+import com.techlabs.app.entity.Account;
+import com.techlabs.app.entity.Bank;
+import com.techlabs.app.entity.Customer;
+import com.techlabs.app.entity.Transaction;
+import com.techlabs.app.entity.TransactionType;
+import com.techlabs.app.entity.User;
+import com.techlabs.app.exception.NoRecordFoundException;
+import com.techlabs.app.repository.AccountRepository;
+import com.techlabs.app.repository.BankRepository;
+import com.techlabs.app.repository.CustomerRespository;
+import com.techlabs.app.repository.TransactionRepository;
+import com.techlabs.app.repository.UserRepository;
+import com.techlabs.app.util.PagedResponse;
+
+@Service
+public class BankServiceImpl implements BankService{
+
+	private TransactionRepository transactionRepository;
+	private CustomerRespository customerRepository;
+	private AccountRepository accountRepository;
+	private BankRepository bankRepository;
+	private UserRepository userRepository;
+	private PasswordEncoder passwordEncoder;
+
+
+    public BankServiceImpl(TransactionRepository transactionRepository, CustomerRespository customerRepository,
+			AccountRepository accountRepository, BankRepository bankRepository, UserRepository userRepository,
+			PasswordEncoder passwordEncoder) {
+		super();
+		this.transactionRepository = transactionRepository;
+		this.customerRepository = customerRepository;
+		this.accountRepository = accountRepository;
+		this.bankRepository = bankRepository;
+		this.userRepository = userRepository;
+		this.passwordEncoder = passwordEncoder;
+	}
+
+	@Override
+    public PagedResponse<TransactionResponseDto> listAllTransactions(LocalDateTime fromDate, LocalDateTime toDate,
+                                                                      int pageNumber, int pageSize, String sortBy, String sortDirection) {
+        Sort sort = sortDirection.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
+        fromDate = fromDate.truncatedTo(ChronoUnit.SECONDS);
+        toDate = toDate.truncatedTo(ChronoUnit.SECONDS);
+        PageRequest pageRequest = PageRequest.of(pageNumber, pageSize, sort);
+
+        Page<Transaction> pagedResponse = transactionRepository.findAllByTransactionDateBetween(fromDate, toDate, pageRequest);
+
+        PagedResponse<TransactionResponseDto> response = new PagedResponse<>(
+				convertTransactionToTransactionResponseDTO(pagedResponse.getContent()), pagedResponse.getNumber(),
+				pagedResponse.getSize(), pagedResponse.getTotalElements(), pagedResponse.getTotalPages(),
+				pagedResponse.isLast());
+		return response;
+    }
+
+    @Override
+    public UserResponseDto registerCustomer(CustomerRequestDto customerRequestDto, long adminId) {
+        User user = userRepository.findById(adminId)
+                .orElseThrow(() -> new NoRecordFoundException("User not found with id: " + adminId));
+
+        if (user.getCustomer() != null) {
+            throw new NoRecordFoundException("Customer already assigned. Cannot create another customer for the user.");
+        }
+
+        Customer customer = convertCustomerRequestToCustomer(customerRequestDto);
+        user.setCustomer(customer);
+        userRepository.save(user);
+
+        return convertUserToUserDto(user);
+    }
+
+    @Override
+    public CustomerResponseDto createCustomerAccount(long customerId, int bankId) {
+        Customer customer = customerRepository.findById(customerId)
+                .orElseThrow(() -> new NoRecordFoundException("Customer not found with id: " + customerId));
+        Bank bank = bankRepository.findById(bankId)
+                .orElseThrow(() -> new NoRecordFoundException("Bank not found with id: " + bankId));
+
+        Account account = new Account();
+        account.setBalance(1000);
+        account.setCustomer(customer);
+        account.setBank(bank);
+        customer.addAccount(account);
+
+        double totalBalance = 1000 + accountRepository.getTotalBalance(customer);
+        customer.setTotalBalance(totalBalance);
+
+        customerRepository.save(customer);
+
+        return convertCustomerToCustomerResponseDto(customer);
+    }
+
+    @Override
+    public List<CustomerResponseDto> retrieveAllCustomers() {
+        return convertCustomerToCustomerResponseDto(customerRepository.findAll());
+    }
+
+    private List<CustomerResponseDto> convertCustomerToCustomerResponseDto(List<Customer> all) {
+		// TODO Auto-generated method stub
+    	 List<CustomerResponseDto> customers = new ArrayList<>();
+
+    	    for (Customer i : all) {
+    	      CustomerResponseDto customer = new CustomerResponseDto();
+    	      customer.setCustomer_id(i.getCustomer_id());
+    	      customer.setFirstName(i.getFirstName());
+    	      customer.setLastName(i.getLastName());
+    	      customer.setTotalBalance(i.getTotalBalance());
+    	      customer.setAccounts(convertAccountToAccountResponseDto(i.getAccounts()));
+    	      customers.add(customer);
+    	    }
+    	    return customers;
+	}
+
+	@Override
+    public CustomerResponseDto findCustomerById(long customerId) {
+        Customer customer = customerRepository.findById(customerId)
+                .orElseThrow(() -> new NoRecordFoundException("No customer found with id: " + customerId));
+        return convertCustomerToCustomerResponseDto(customer);
+    }
+
+    @Override
+    public TransactionResponseDto processTransaction(long senderAccount, long receiverAccount, double transactionAmount) {
+        User user = userRepository.findByEmail(getUsernameFromSecurityContext())
+                .orElseThrow(() -> new NoRecordFoundException("User not found"));
+
+        Account senderAccountEntity = accountRepository.findById(senderAccount)
+                .orElseThrow(() -> new NoRecordFoundException("Sender account not found with number: " + senderAccount));
+        Account receiverAccountEntity = accountRepository.findById(receiverAccount)
+                .orElseThrow(() -> new NoRecordFoundException("Receiver account not found with number: " + receiverAccount));
+
+        if (senderAccountEntity.equals(receiverAccountEntity)) {
+            throw new NoRecordFoundException("Self-transfer to the same account is not possible.");
+        }
+
+        if (senderAccountEntity.getBalance() < transactionAmount) {
+            throw new NoRecordFoundException("Insufficient funds. Please check the balance.");
+        }
+
+        senderAccountEntity.setBalance(senderAccountEntity.getBalance() - transactionAmount);
+        receiverAccountEntity.setBalance(receiverAccountEntity.getBalance() + transactionAmount);
+
+        accountRepository.save(senderAccountEntity);
+        accountRepository.save(receiverAccountEntity);
+
+        senderAccountEntity.getCustomer().setTotalBalance(senderAccountEntity.getCustomer().getTotalBalance() - transactionAmount);
+        receiverAccountEntity.getCustomer().setTotalBalance(receiverAccountEntity.getCustomer().getTotalBalance() + transactionAmount);
+
+        customerRepository.save(senderAccountEntity.getCustomer());
+        customerRepository.save(receiverAccountEntity.getCustomer());
+
+        Transaction transaction = new Transaction();
+        transaction.setAmount(transactionAmount);
+        transaction.setSenderAccount(senderAccountEntity);
+        transaction.setReceiverAccount(receiverAccountEntity);
+        transaction.setTransactionType(TransactionType.Transfer);
+
+        return convertTransactionToTransactionResponseDTO(transactionRepository.save(transaction));
+    }
+
+    @Override
+    public List<TransactionResponseDto> getAccountPassbook(long accountNumber) {
+        Account account = accountRepository.findById(accountNumber)
+                .orElseThrow(() -> new NoRecordFoundException("No account found with account number: " + accountNumber));
+
+        List<Transaction> transactions = transactionRepository.getPassbook(account);
+
+        return convertTransactionToTransactionResponseDTO(transactions);
+    }
+
+    @Override
+    public ProfileResponseDto updateCustomerProfile(ProfileRequestDto profileRequestDto, String usernameFromSecurityContext) {
+        User user = userRepository.findByEmail(usernameFromSecurityContext)
+                .orElseThrow(() -> new NoRecordFoundException("User not found"));
+
+        Customer customer = user.getCustomer();
+        if (customer == null) {
+            throw new NoRecordFoundException("Cannot update profile. Customer ID not found.");
+        }
+
+        if (profileRequestDto.getEmail() != null && !profileRequestDto.getEmail().isEmpty()) {
+            user.setEmail(profileRequestDto.getEmail());
+        }
+        if (profileRequestDto.getFirstName() != null && !profileRequestDto.getFirstName().isEmpty()) {
+            customer.setFirstName(profileRequestDto.getFirstName());
+        }
+        if (profileRequestDto.getLastName() != null && !profileRequestDto.getLastName().isEmpty()) {
+            customer.setLastName(profileRequestDto.getLastName());
+        }
+        if (profileRequestDto.getPassword() != null && !profileRequestDto.getPassword().isEmpty()) {
+            user.setPassword(passwordEncoder.encode(profileRequestDto.getPassword()));
+        }
+
+        userRepository.save(user);
+
+        return new ProfileResponseDto(user.getEmail(), customer.getFirstName(), customer.getLastName());
+    }
+
+    private String getUsernameFromSecurityContext() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            return userDetails.getUsername();
+        }
+        return null;
+    }
+    
+    private List<TransactionResponseDto> convertTransactionToTransactionResponseDTO(List<Transaction> transactions) {
+        return transactions.stream()
+                .map(this::convertTransactionToTransactionResponseDTO)
+                .collect(Collectors.toList());
+    }
+
+    private TransactionResponseDto convertTransactionToTransactionResponseDTO(Transaction transaction) {
+        TransactionResponseDto responseDto = new TransactionResponseDto();
+        responseDto.setId(transaction.getId());
+        responseDto.setSenderAccount(convertAccountToAccountResponseDto(transaction.getSenderAccount()));
+        responseDto.setReceiverAccount(convertAccountToAccountResponseDto(transaction.getReceiverAccount()));
+        responseDto.setTransactionType(transaction.getTransactionType());
+        responseDto.setTransactionDate(transaction.getTransactionDate());
+        responseDto.setAmount(transaction.getAmount());
+        return responseDto;
+    }
+
+    private AccountResponseDto convertAccountToAccountResponseDto(Account account) {
+        AccountResponseDto accountResponseDto = new AccountResponseDto();
+        accountResponseDto.setAccountNumber(account.getAccountNumber());
+        accountResponseDto.setBalance(account.getBalance());
+        return accountResponseDto;
+    }
+
+    private CustomerResponseDto convertCustomerToCustomerResponseDto(Customer customer) {
+        CustomerResponseDto customerResponseDto = new CustomerResponseDto();
+        customerResponseDto.setCustomer_id(customer.getCustomer_id());
+        customerResponseDto.setFirstName(customer.getFirstName());
+        customerResponseDto.setLastName(customer.getLastName());
+        customerResponseDto.setTotalBalance(customer.getTotalBalance());
+        customerResponseDto.setAccounts(convertAccountToAccountResponseDto(customer.getAccounts()));
+        return customerResponseDto;
+    }
+
+    private List<AccountResponseDto> convertAccountToAccountResponseDto(List<Account> accounts) {
+        return accounts.stream()
+                .map(this::convertAccountToAccountResponseDto)
+                .collect(Collectors.toList());
+    }
+
+
+    private Customer convertCustomerRequestToCustomer(CustomerRequestDto customerRequestDto) {
+        Customer customer = new Customer();
+        customer.setFirstName(customerRequestDto.getFirstName());
+        customer.setLastName(customerRequestDto.getLastName());
+        return customer;
+    }
+
+    private UserResponseDto convertUserToUserDto(User user) {
+        UserResponseDto userResponseDto = new UserResponseDto();
+        userResponseDto.setId(user.getId());
+        userResponseDto.setEmail(user.getEmail());
+        if (user.getCustomer() != null) {
+            userResponseDto.setCustomerResponseDto(convertCustomerToCustomerResponseDto(user.getCustomer()));
+        }
+        return userResponseDto;
+    }
+	
+}

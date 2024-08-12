@@ -82,19 +82,22 @@ public class BankServiceImpl implements BankService{
     @Override
     public PagedResponse<TransactionResponseDto> listAllTransactions(LocalDateTime fromDate, LocalDateTime toDate,
             int pageNumber, int pageSize, String sortBy, String sortDirection) {
-        Sort sort = Sort.by(sortBy);
-        if (sortDirection.equalsIgnoreCase("desc")) {
-            sort = sort.descending();
-        } else {
-            sort = sort.ascending();
-        }
-        PageRequest pageRequest = PageRequest.of(pageNumber, pageSize, sort);
-        Page<Transaction> pagedResponse = transactionRepository.findAllByTransactionDateBetween(fromDate, toDate,
-                pageRequest);
+		Sort sort = Sort.by(sortBy);
+		if (sortDirection.equalsIgnoreCase("desc")) {
+			sort = sort.descending();
+		} else {
+			sort = sort.ascending();
+		}
+		PageRequest pageRequest = PageRequest.of(pageNumber, pageSize, sort);
+		System.out.println("Page request: " + pageRequest);
+		Page<Transaction> pagedResponse = transactionRepository.findAllByTransactionDateBetween(fromDate, toDate,
+				pageRequest);
 
-        return new PagedResponse<>(convertTransactionToTransactionResponseDTO(pagedResponse.getContent()), pagedResponse.getNumber(),
-                pagedResponse.getSize(), pagedResponse.getTotalElements(), pagedResponse.getTotalPages(),
-                pagedResponse.isLast());
+		PagedResponse<TransactionResponseDto> response = new PagedResponse<>(
+				convertTransactionToTransactionResponseDTO(pagedResponse.getContent()), pagedResponse.getNumber(),
+				pagedResponse.getSize(), pagedResponse.getTotalElements(), pagedResponse.getTotalPages(),
+				pagedResponse.isLast());
+		return response;
     }
 
     @Override

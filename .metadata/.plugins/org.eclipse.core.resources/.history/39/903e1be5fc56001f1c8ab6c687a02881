@@ -1,0 +1,34 @@
+package com.techlabs.app.service;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+import com.techlabs.app.dto.CustomerRequestDto;
+import com.techlabs.app.dto.CustomerResponseDto;
+import com.techlabs.app.dto.ProfileRequestDto;
+import com.techlabs.app.dto.ProfileResponseDto;
+import com.techlabs.app.dto.TransactionResponseDto;
+import com.techlabs.app.dto.UserResponseDto;
+import com.techlabs.app.util.PagedResponse;
+
+public interface BankService {
+
+	PagedResponse<TransactionResponseDto> listAllTransactions(LocalDateTime fromDate, LocalDateTime toDate,
+			int pageNumber, int pageSize, String sortBy, String sortDirection);
+
+	UserResponseDto registerCustomer(CustomerRequestDto customerRequestDto, long adminId);
+
+	CustomerResponseDto createCustomerAccount(long customerId, int bankId);
+
+	List<CustomerResponseDto> retrieveAllCustomers();
+
+	CustomerResponseDto findCustomerById(long customerId);
+
+	TransactionResponseDto processTransaction(long senderAccount, long receiverAccount, double transactionAmount);
+
+	List<TransactionResponseDto> getAccountPassbook(long accountNumber);
+
+	ProfileResponseDto updateCustomerProfile(ProfileRequestDto profileRequestDto, String usernameFromSecurityContext);
+
+	
+}

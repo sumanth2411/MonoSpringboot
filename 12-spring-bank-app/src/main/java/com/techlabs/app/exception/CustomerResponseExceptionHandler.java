@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class CustomerResponseExceptionHandler {
 
 	@ExceptionHandler
-	public ResponseEntity<CustomerErrorResponse> handleException(StudentNotFoundException exc) {
+	public ResponseEntity<CustomerErrorResponse> handleException(CustomerNotFoundException exc) {
 
 		// create a Student Error Message
 		CustomerErrorResponse error = new CustomerErrorResponse();

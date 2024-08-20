@@ -20,4 +20,6 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long>{
 	
 	@Query("select t from Transaction t where (t.senderAccount = :account or t.receiverAccount = :account) and t.transactionDate between :from and :to")
 	Page<Transaction> getPassbook(@Param("account") Account account, @Param("from") LocalDateTime from, @Param("to") LocalDateTime to, Pageable pageable);
+	
+	//Page<Transaction> findAllByTransactionDateBetween(LocalDateTime fromDate, LocalDateTime toDate, Pageable pageable);
 }

@@ -21,6 +21,8 @@ public interface BankService {
 	PagedResponse<TransactionResponseDto> listAllTransactions(LocalDateTime fromDate, LocalDateTime toDate,
 			int pageNumber, int pageSize, String sortBy, String sortDirection);
 
+	PagedResponse<TransactionResponseDto> viewAllTransaction(LocalDateTime fromDate, LocalDateTime toDate, int page, int size, String sortBy, String direction);
+	
 	UserResponseDto registerCustomer(CustomerRequestDto customerRequestDto, long userId);
 
 	CustomerResponseDto createCustomerAccount(long customerId, int bankId);

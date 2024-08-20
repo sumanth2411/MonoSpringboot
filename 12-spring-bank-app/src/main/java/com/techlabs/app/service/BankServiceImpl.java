@@ -80,6 +80,27 @@ public class BankServiceImpl implements BankService{
 	}
 
     @Override
+    public PagedResponse<TransactionResponseDto> viewAllTransaction(LocalDateTime fromDate, LocalDateTime toDate,
+        int page, int size, String sortBy, String direction) {
+      Sort sort = Sort.by(sortBy);
+      if (direction.equalsIgnoreCase("desc")) {
+        sort = sort.descending();
+      } else {
+        sort = sort.ascending();
+      }
+      PageRequest pageRequest = PageRequest.of(page, size, sort);
+      System.out.println("Page request: " + pageRequest);
+      Page<Transaction> pagedResponse = transactionRepository.findAllByTransactionDateBetween(fromDate, toDate,
+          pageRequest);
+
+      PagedResponse<TransactionResponseDto> response = new PagedResponse<>(
+          convertTransactionToTransactionResponseDTO(pagedResponse.getContent()), pagedResponse.getNumber(),
+          pagedResponse.getSize(), pagedResponse.getTotalElements(), pagedResponse.getTotalPages(),
+          pagedResponse.isLast());
+      return response;
+    }
+    
+    @Override
     public PagedResponse<TransactionResponseDto> listAllTransactions(LocalDateTime fromDate, LocalDateTime toDate,
             int pageNumber, int pageSize, String sortBy, String sortDirection) {
 		Sort sort = Sort.by(sortBy);
